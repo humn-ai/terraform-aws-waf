@@ -453,7 +453,7 @@ variable "redacted_fields" {
 }
 
 variable "extended_s3_configuration" {
-  type        = map(any)
+  type        = list(any)
   default     = {}
   description = <<-DOC
     role_arn:
