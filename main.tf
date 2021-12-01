@@ -20,12 +20,12 @@ resource "aws_kinesis_firehose_delivery_stream" "default" {
       buffer_interval     = extended_s3_configuration.value.buffer_interval
       compression_format  = extended_s3_configuration.value.compression_format
       dynamic "data_format_conversion_configuration" {
-        for_each = extended_s3_configuration.value.data_format_conversion_configuration ? [1] : []
+        for_each = extended_s3_configuration.value.data_format_conversion_configuration != [] ? [1] : []
         content {
         }
       }
       dynamic "processing_configuration" {
-        for_each = extended_s3_configuration.value.processing_configuration ? [1] : []
+        for_each = extended_s3_configuration.value.processing_configuration != [] ? [1] : []
         content {
         }
       }
