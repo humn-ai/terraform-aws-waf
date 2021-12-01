@@ -19,11 +19,8 @@ resource "aws_kinesis_firehose_delivery_stream" "default" {
       buffer_size                          = extended_s3_configuration.values.buffer_size
       buffer_interval                      = extended_s3_configuration.values.buffer_interval
       compression_format                   = extended_s3_configuration.values.compression_format
-      kms_key_arn                          = extended_s3_configuration.values.kms_key_arn
-      data_format_conversion_configuration = extended_s3_configuration.values.data_format_conversion_configuration
-      processing_configuration             = extended_s3_configuration.values.processing_configuration
-      s3_backup_mode                       = extended_s3_configuration.values.s3_backup_mode
-      s3_backup_configuration              = extended_s3_configuration.values.s3_backup_configuration
+      data_format_conversion_configuration = extended_s3_configuration.values.data_format_conversion_configuration != null ? extended_s3_configuration.values.data_format_conversion_configuration : {}
+      processing_configuration             = extended_s3_configuration.values.processing_configuration != null ? extended_s3_configuration.values.processing_configuration : {}
     }
   }
 }
