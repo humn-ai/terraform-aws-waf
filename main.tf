@@ -12,15 +12,25 @@ resource "aws_kinesis_firehose_delivery_stream" "default" {
   dynamic "extended_s3_configuration" {
     for_each = var.extended_s3_configuration
     content {
-      role_arn                             = extended_s3_configuration.value.role_arn
-      bucket_arn                           = extended_s3_configuration.value.bucket_arn
-      prefix                               = "${module.this.id}/"
-      error_output_prefix                  = "error-${module.this.id}/"
-      buffer_size                          = extended_s3_configuration.values.buffer_size
-      buffer_interval                      = extended_s3_configuration.values.buffer_interval
-      compression_format                   = extended_s3_configuration.values.compression_format
-      data_format_conversion_configuration = extended_s3_configuration.values.data_format_conversion_configuration != null ? extended_s3_configuration.values.data_format_conversion_configuration : {}
-      processing_configuration             = extended_s3_configuration.values.processing_configuration != null ? extended_s3_configuration.values.processing_configuration : {}
+      role_arn            = extended_s3_configuration.value.role_arn
+      bucket_arn          = extended_s3_configuration.value.bucket_arn
+      prefix              = "${module.this.id}/"
+      error_output_prefix = "error-${module.this.id}/"
+      buffer_size         = extended_s3_configuration.value.buffer_size
+      buffer_interval     = extended_s3_configuration.value.buffer_interval
+      compression_format  = extended_s3_configuration.value.compression_format
+      dynamic "data_format_conversion_configuration" {
+        for_each = extended_s3_configuration.value.data_format_conversion_configuration ? [1] : []
+        content {
+        }
+      }
+      dynamic "processing_configuration" {
+        for_each = extended_s3_configuration.value.processing_configuration ? [1] : []
+        content {
+        }
+      }
+      # extended_s3_configuration.values.data_format_conversion_configuration != null ? extended_s3_configuration.values.data_format_conversion_configuration : {}
+      # processing_configuration             = extended_s3_configuration.values.processing_configuration != null ? extended_s3_configuration.values.processing_configuration : {}
     }
   }
 }
