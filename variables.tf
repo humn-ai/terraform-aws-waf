@@ -452,6 +452,34 @@ variable "redacted_fields" {
   DOC
 }
 
+variable "extended_s3_configuration" {
+  type        = map(any)
+  default     = {}
+  description = <<-DOC
+    role_arn:
+      The ARN of the AWS credentials.
+    bucket_arn:
+      The ARN of the S3 bucket
+    buffer_size:
+      Buffer incoming data to the specified size, in MBs, before delivering it to the destination.
+      The default value is 5. We recommend setting SizeInMBs to a value greater than the amount of data you typically ingest into the delivery stream in 10 seconds. For example, if you typically ingest data at 1 MB/sec set SizeInMBs to be 10 MB or higher.
+    buffer_interval:
+      Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination. The default value is 300.
+    compression_format:
+      The compression format. If no value is specified, the default is UNCOMPRESSED. Other supported values are GZIP, ZIP, Snappy, & HADOOP_SNAPPY.
+    kms_key_arn:
+      Specifies the KMS key ARN the stream will use to encrypt data. If not set, no encryption will be used.
+    data_format_conversion_configuration:
+      Nested argument for the serializer, deserializer, and schema for converting data from the JSON format to the Parquet or ORC format before writing it to Amazon S3.
+    processing_configuration:
+      The data processing configuration. More details are given below.
+    s3_backup_mode:
+      The Amazon S3 backup mode. Valid values are Disabled and Enabled. Default value is Disabled.
+    s3_backup_configuration:
+      The configuration for backup in Amazon S3. Required if s3_backup_mode is Enabled. Supports the same fields as s3_configuration object.
+  DOC
+}
+
 variable "role_arn" {
   description = "(Required) - The ARN of the role that provides access to the source Kinesis stream."
   type        = string

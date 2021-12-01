@@ -9,10 +9,22 @@ resource "aws_kinesis_firehose_delivery_stream" "default" {
   name        = "aws-waf-logs-${var.name}-${element(module.kinesis.attributes, 0)}" //https://github.com/pulumi/pulumi-aws/issues/1214#issuecomment-891868939
   destination = "extended_s3"
 
-  extended_s3_configuration {
-    role_arn   = var.role_arn
-    bucket_arn = var.bucket_arn
-    prefix     = "${module.this.id}/"
+  dynamic "extended_s3_configuration" {
+    for_each = var.extended_s3_configuration
+    content {
+      role_arn                             = extended_s3_configuration.value.role_arn
+      bucket_arn                           = extended_s3_configuration.value.bucket_arn
+      prefix                               = "${module.this.id}/"
+      error_output_prefix                  = "error-${module.this.id}/"
+      buffer_size                          = extended_s3_configuration.values.buffer_size
+      buffer_interval                      = extended_s3_configuration.values.buffer_interval
+      compression_format                   = extended_s3_configuration.values.compression_format
+      kms_key_arn                          = extended_s3_configuration.values.kms_key_arn
+      data_format_conversion_configuration = extended_s3_configuration.values.data_format_conversion_configuration
+      processing_configuration             = extended_s3_configuration.values.processing_configuration
+      s3_backup_mode                       = extended_s3_configuration.values.s3_backup_mode
+      s3_backup_configuration              = extended_s3_configuration.values.s3_backup_configuration
+    }
   }
 }
 
