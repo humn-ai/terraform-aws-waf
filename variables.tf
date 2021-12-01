@@ -479,13 +479,3 @@ variable "extended_s3_configuration" {
       The configuration for backup in Amazon S3. Required if s3_backup_mode is Enabled. Supports the same fields as s3_configuration object.
   DOC
 }
-
-variable "role_arn" {
-  description = "(Required) - The ARN of the role that provides access to the source Kinesis stream."
-  type        = string
-}
-
-variable "bucket_arn" {
-  description = "(Required) - The ARN of the S3 bucket."
-  type        = string
-}
