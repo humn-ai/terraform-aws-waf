@@ -29,8 +29,6 @@ resource "aws_kinesis_firehose_delivery_stream" "default" {
         content {
         }
       }
-      # extended_s3_configuration.values.data_format_conversion_configuration != null ? extended_s3_configuration.values.data_format_conversion_configuration : {}
-      # processing_configuration             = extended_s3_configuration.values.processing_configuration != null ? extended_s3_configuration.values.processing_configuration : {}
     }
   }
 }
