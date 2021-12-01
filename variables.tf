@@ -454,7 +454,7 @@ variable "redacted_fields" {
 
 variable "extended_s3_configuration" {
   type        = list(any)
-  default     = {}
+  default     = []
   description = <<-DOC
     role_arn:
       The ARN of the AWS credentials.
