@@ -479,3 +479,9 @@ variable "extended_s3_configuration" {
       The configuration for backup in Amazon S3. Required if s3_backup_mode is Enabled. Supports the same fields as s3_configuration object.
   DOC
 }
+
+variable "ignore_waf_associations" {
+  type        = bool
+  default     = false
+  description = "Some associated ARN's may be added to the WAF from other places, e.g. the rideshur-web ingress controller specifies association to the WAF via an annotation."
+}
