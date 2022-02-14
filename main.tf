@@ -3,6 +3,10 @@ resource "aws_wafv2_web_acl_association" "default" {
 
   resource_arn = var.association_resource_arns[count.index]
   web_acl_arn  = join("", aws_wafv2_web_acl.default.*.arn)
+
+  lifecycle {
+    ignore_changes = var.ignore_waf_associations ? [resource_arn] : []
+  }
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "default" {
