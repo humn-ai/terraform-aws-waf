@@ -5,7 +5,7 @@ resource "aws_wafv2_web_acl_association" "default" {
   web_acl_arn  = join("", aws_wafv2_web_acl.default.*.arn)
 
   lifecycle {
-    ignore_changes = ignore_waf_associations ? [resource_arn, ] : []
+    ignore_changes = var.ignore_waf_associations ? [resource_arn] : []
   }
 }
 
