@@ -1,4 +1,4 @@
-resource "aws_wafv2_web_acl_association" "create_waf_associations" {
+resource "aws_wafv2_web_acl_association" "default" {
   count = module.this.enabled && !var.ignore_waf_associations && length(var.association_resource_arns) > 0 ? length(var.association_resource_arns) : 0
 
   resource_arn = var.association_resource_arns[count.index]
