@@ -1,11 +1,18 @@
-resource "aws_wafv2_web_acl_association" "default" {
-  count = module.this.enabled && length(var.association_resource_arns) > 0 ? length(var.association_resource_arns) : 0
+resource "aws_wafv2_web_acl_association" "create_waf_associations" {
+  count = module.this.enabled && !var.ignore_waf_associations && length(var.association_resource_arns) > 0 ? length(var.association_resource_arns) : 0
+
+  resource_arn = var.association_resource_arns[count.index]
+  web_acl_arn  = join("", aws_wafv2_web_acl.default.*.arn)
+}
+
+resource "aws_wafv2_web_acl_association" "ignore_waf_associations" {
+  count = module.this.enabled && var.ignore_waf_associations && length(var.association_resource_arns) > 0 ? length(var.association_resource_arns) : 0
 
   resource_arn = var.association_resource_arns[count.index]
   web_acl_arn  = join("", aws_wafv2_web_acl.default.*.arn)
 
   lifecycle {
-    ignore_changes = var.ignore_waf_associations ? [resource_arn] : []
+    ignore_changes = [resource_arn]
   }
 }
 
