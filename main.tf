@@ -34,7 +34,7 @@ resource "aws_kinesis_firehose_delivery_stream" "default" {
 resource "aws_wafv2_web_acl_logging_configuration" "default" {
   count = module.this.enabled && var.extended_s3_configuration != null ? 1 : 0
 
-  log_destination_configs = [aws_kinesis_firehose_delivery_stream.default.arn]
+  log_destination_configs = [aws_kinesis_firehose_delivery_stream.default[0].arn]
   resource_arn            = join("", aws_wafv2_web_acl.default.*.arn)
 
   dynamic "redacted_fields" {
