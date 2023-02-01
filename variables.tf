@@ -460,7 +460,7 @@ variable "extended_s3_configuration" {
     buffer_interval                      = number
     compression_format                   = string
   })
-  default     = {}
+  default     = null
   description = <<-DOC
     role_arn:
       The ARN of the AWS credentials.

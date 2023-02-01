@@ -17,7 +17,7 @@ resource "aws_wafv2_web_acl_association" "ignore_waf_associations" {
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "default" {
-  count = module.this.enabled && var.extended_s3_configuration != {} ? 1 : 0
+  count = module.this.enabled && var.extended_s3_configuration != null ? 1 : 0
 
   name                      = "aws-waf-logs-${var.environment}-${var.name}-${element(module.kinesis.attributes, 0)}" //https://github.com/pulumi/pulumi-aws/issues/1214#issuecomment-891868939
   destination               = "extended_s3"
@@ -25,7 +25,7 @@ resource "aws_kinesis_firehose_delivery_stream" "default" {
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "default" {
-  count = module.this.enabled && var.extended_s3_configuration != {} ? 1 : 0
+  count = module.this.enabled && var.extended_s3_configuration != null ? 1 : 0
 
   log_destination_configs = [aws_kinesis_firehose_delivery_stream.default.arn]
   resource_arn            = join("", aws_wafv2_web_acl.default.*.arn)
