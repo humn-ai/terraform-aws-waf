@@ -453,8 +453,14 @@ variable "redacted_fields" {
 }
 
 variable "extended_s3_configuration" {
-  type        = list(any)
-  default     = []
+  type = object({
+    role_arn                             = string
+    bucket_arn                           = string
+    buffer_size                          = number
+    buffer_interval                      = number
+    compression_format                   = string
+  })
+  default     = {}
   description = <<-DOC
     role_arn:
       The ARN of the AWS credentials.
@@ -467,16 +473,6 @@ variable "extended_s3_configuration" {
       Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination. The default value is 300.
     compression_format:
       The compression format. If no value is specified, the default is UNCOMPRESSED. Other supported values are GZIP, ZIP, Snappy, & HADOOP_SNAPPY.
-    kms_key_arn:
-      Specifies the KMS key ARN the stream will use to encrypt data. If not set, no encryption will be used.
-    data_format_conversion_configuration:
-      Nested argument for the serializer, deserializer, and schema for converting data from the JSON format to the Parquet or ORC format before writing it to Amazon S3.
-    processing_configuration:
-      The data processing configuration. More details are given below.
-    s3_backup_mode:
-      The Amazon S3 backup mode. Valid values are Disabled and Enabled. Default value is Disabled.
-    s3_backup_configuration:
-      The configuration for backup in Amazon S3. Required if s3_backup_mode is Enabled. Supports the same fields as s3_configuration object.
   DOC
 }
 

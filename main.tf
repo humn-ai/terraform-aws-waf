@@ -17,31 +17,9 @@ resource "aws_wafv2_web_acl_association" "ignore_waf_associations" {
 }
 
 resource "aws_kinesis_firehose_delivery_stream" "default" {
-  name        = "aws-waf-logs-${var.environment}-${var.name}-${element(module.kinesis.attributes, 0)}" //https://github.com/pulumi/pulumi-aws/issues/1214#issuecomment-891868939
-  destination = "extended_s3"
-
-  dynamic "extended_s3_configuration" {
-    for_each = var.extended_s3_configuration
-    content {
-      role_arn            = extended_s3_configuration.value.role_arn
-      bucket_arn          = extended_s3_configuration.value.bucket_arn
-      prefix              = "${module.this.id}/"
-      error_output_prefix = "error-${module.this.id}/"
-      buffer_size         = extended_s3_configuration.value.buffer_size
-      buffer_interval     = extended_s3_configuration.value.buffer_interval
-      compression_format  = extended_s3_configuration.value.compression_format
-      dynamic "data_format_conversion_configuration" {
-        for_each = extended_s3_configuration.value.data_format_conversion_configuration != [] ? [1] : []
-        content {
-        }
-      }
-      dynamic "processing_configuration" {
-        for_each = extended_s3_configuration.value.processing_configuration != [] ? [1] : []
-        content {
-        }
-      }
-    }
-  }
+  name                      = "aws-waf-logs-${var.environment}-${var.name}-${element(module.kinesis.attributes, 0)}" //https://github.com/pulumi/pulumi-aws/issues/1214#issuecomment-891868939
+  destination               = "extended_s3"
+  extended_s3_configuration = var.extended_s3_configuration
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "default" {
