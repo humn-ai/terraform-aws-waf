@@ -27,7 +27,7 @@ resource "aws_kinesis_firehose_delivery_stream" "default" {
     bucket_arn         = var.extended_s3_configuration.bucket_arn
     buffer_size        = var.extended_s3_configuration.buffer_size
     buffer_interval    = var.extended_s3_configuration.buffer_interval
-    compression_format = var.extended_s3_configuration.compression_forma
+    compression_format = var.extended_s3_configuration.compression_format
   }
 }
 
