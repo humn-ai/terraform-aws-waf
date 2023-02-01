@@ -19,9 +19,16 @@ resource "aws_wafv2_web_acl_association" "ignore_waf_associations" {
 resource "aws_kinesis_firehose_delivery_stream" "default" {
   count = module.this.enabled && var.extended_s3_configuration != null ? 1 : 0
 
-  name                      = "aws-waf-logs-${var.environment}-${var.name}-${element(module.kinesis.attributes, 0)}" //https://github.com/pulumi/pulumi-aws/issues/1214#issuecomment-891868939
-  destination               = "extended_s3"
-  extended_s3_configuration = var.extended_s3_configuration
+  name        = "aws-waf-logs-${var.environment}-${var.name}-${element(module.kinesis.attributes, 0)}" //https://github.com/pulumi/pulumi-aws/issues/1214#issuecomment-891868939
+  destination = "extended_s3"
+
+  extended_s3_configuration {
+    role_arn           = var.extended_s3_configuration.role_arn
+    bucket_arn         = var.extended_s3_configuration.bucket_arn
+    buffer_size        = var.extended_s3_configuration.buffer_size
+    buffer_interval    = var.extended_s3_configuration.buffer_interval
+    compression_format = var.extended_s3_configuration.compression_forma
+  }
 }
 
 resource "aws_wafv2_web_acl_logging_configuration" "default" {
