@@ -456,8 +456,8 @@ variable "extended_s3_configuration" {
   type = object({
     role_arn                             = string
     bucket_arn                           = string
-    buffer_size                          = number
-    buffer_interval                      = number
+    buffering_size                       = number
+    buffering_interval                   = number
     compression_format                   = string
   })
   default     = null
@@ -466,10 +466,10 @@ variable "extended_s3_configuration" {
       The ARN of the AWS credentials.
     bucket_arn:
       The ARN of the S3 bucket
-    buffer_size:
+    buffering_size:
       Buffer incoming data to the specified size, in MBs, before delivering it to the destination.
       The default value is 5. We recommend setting SizeInMBs to a value greater than the amount of data you typically ingest into the delivery stream in 10 seconds. For example, if you typically ingest data at 1 MB/sec set SizeInMBs to be 10 MB or higher.
-    buffer_interval:
+    buffering_interval:
       Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination. The default value is 300.
     compression_format:
       The compression format. If no value is specified, the default is UNCOMPRESSED. Other supported values are GZIP, ZIP, Snappy, & HADOOP_SNAPPY.
